@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 # Globala Variabler
 treasure = 50000
 
-# Ett bibliotek med alternativ för användaren under startmenyn
+# options är ett bibliotek med alternativ för användaren under startmenyn
 # Det är bättre att använda ett bibliotek för att det är lättare att utöka eller minska
 options = {
     "s":"Spela Skattjakten",
@@ -34,7 +34,8 @@ min_doors = 1
 max_doors = 10
 # Slut på globala variabler
 
-# En funktion som används för att starta upp startmenyn och printar alternativen.
+# start_menu(options) är en funktion som används för att starta upp startmenyn 
+# och printar alternativen.
 # options: ett bibliotek för alla olika spelalternativ
 def start_menu(options):
     print("\n***STARTMENYN***\n")
@@ -42,7 +43,8 @@ def start_menu(options):
         print(f"{key}) {options[key]}")
         print()
 
-# En funktion som används för att rita upp alla dörrar som används i spelet
+# draw_doors(max_doors, used_doors) är en hjälpfunktion som används för att rita upp alla 
+# dörrar som används i spelet.
 # max_doors: max antal dörrar som använda i spelet
 # used_doors: dörrarna som användaren tidigare har öppnat under spelet
 def draw_doors(max_doors, used_doors):
@@ -64,14 +66,9 @@ def draw_doors(max_doors, used_doors):
     print(number_row)
     print(bottom)
 
-def number_exp(n, exp):
-    answer = 1
-    for i in range(1, exp + 1):
-        answer = answer * n
-    return answer
-
-# En funktion som kollar ifall att dörren som användaren vill öppna är en dörr som redan
-# är öppen, en dörr där skatten ligger bakom, eller en dörr där ingen skatt ligger bakom.
+# treasure_hunt(treasure_door, used_doors, user_input) är en funktion som kollar ifall att 
+# dörren som användaren vill öppna är en dörr som redan är öppen, en dörr
+# där skatten ligger bakom, eller en dörr där ingen skatt ligger bakom.
 # treasure_door: dörren som slumpmässigt valdes, där skatten ligger bakom
 # used_doors: en array av dörrar som användaren tidigare har valt
 # user_input: användarens input, vilken dörr användaren har valt att öppna
@@ -91,8 +88,8 @@ def treasure_hunt(treasure_door, used_doors, user_input):
         print(f"*****Hoppsan! Ingen skatt hittades bakom dörr {user_input}, skatten halveras!*****")
         return False
 
-# En hjälpfunktion som använda för att räkna ut skatten som har halverats efter
-# varje felaktig försök
+# treasure_value(treasure, score) är en hjälpfunktion som använda för att 
+# räkna ut skatten som har halverats efter varje felaktig försök.
 # treasure: skatten som användaren vill hitta bakom en slumpmässig dörr
 # score: antal försök användaren hade för att hitta rätt dörr
 def treasure_value(treasure, score):
@@ -103,7 +100,8 @@ def treasure_value(treasure, score):
         return treasure / exp
 
 
-# En funktion som används för att spara användarens uppgifter i csv-filen
+# save_result(name, score, file_name) är en funktion som används för att spara 
+# användarens uppgifter i csv-filen.
 # name: namnet på användaren som angetts i början av spelet
 # score: antal försök användaren hade innan de hittade skatten
 # file_name: namnet på csv-filen vi kommer skriva till
@@ -143,7 +141,8 @@ def save_result(name, score, file_name):
 #     except FileNotFoundError: 
 #         print("*****Ingen resultatfil hittades.*****")
 
-# En funktion som används för att printa ut topplistan enligt csv-filen
+# show_leaderboard(file_name) är en funktion som används för att printa ut 
+# topplistan enligt csv-filen.
 # file_name: namnet på csv-filen som användaren angett innan spelet påbörjades
 def show_leaderboard(file_name):
     data_list = []
@@ -168,7 +167,7 @@ def show_leaderboard(file_name):
         print("*****Ingen resultatfil hittades.*****")
 
 
-# En quit-funktion som används för att avsluta spelet
+# quit_game(name) är en quit-funktion som används för att avsluta spelet
 # name: namnet på spelaren
 def quit_game(name):
     print("\n************************************************************\n")
@@ -176,7 +175,8 @@ def quit_game(name):
     print("\n************************************************************\n")
     return False
 
-# En main funktion som hanterar all user input
+# main() är en main funktion som hanterar all user input och hanterar
+# vad användaren vill göra i spelet.
 def main():
     name = input("Vad heter du? ")
     print(f"\n*****Välkommen till Templets Tio Dörrar, {name}! Skatten med värde {treasure} finns bakom en av dörrarna!*****\n")
