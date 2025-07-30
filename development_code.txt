@@ -1,0 +1,10 @@
+# En hjälpfunktion som använda för att räkna ut skatten som har 
+# halverats efter varje felaktig försök.
+# treasure: skatten som användaren vill hitta bakom en slumpmässig dörr
+# score: antal försök användaren hade för att hitta rätt dörr
+# def treasure_value(treasure, score):
+#     exp = pow(2, score)                                                         # Beräknar 2^score för att halvera skatten efter varje försök
+#     if score == 1:
+#         return treasure
+#     else:
+#         return treasure / exp
