@@ -1,29 +1,9 @@
-# Svarsfil till inlämningsuppgiften i Grundläggande programmering i Python augusti 2025.
+# Detta är svarsfilen där du skriver din inlämningsuppgift i kursen Grundläggande programmering i Python (augusti 2025).
+# Filen "skattresultat.csv" ska du använda för att spara riktiga resultat. 
+# Den ska skapas om den inte finns, och om den redan finns ska du läsa från den eller lägga till ny information (inte skriva över).
+# Om du i stället vill testa din kod med fiktiv data, kan du använda "exempelCSV.csv" som testfil.
 
-# Denna rad används för att namnge CSV-filen i koden. Använd sedan variabeln "filnamn" när du skapar din kod.
-#filnamn = input('Vad vill du döpa din CSV-fil till? Avsluta namnet med .csv ' ) or 'exempelCSV.csv'
-
-filnamn = 'skattresultat.csv'
-# filnamn = 'exempelCSV.csv'
-
-# Skriver ut filnamnet så att du ser att det blev rätt.
-print('Du valde filnamnet', filnamn)
-
-# Hur du kör koden:
-# 1. Om du vill köra koden med din fil 'skattresultat.csv' kan du gå vidare till
-# steg 2, men om du vill köra med 'exempelCSV.csv' filen bör du kommentera 
-# rad 6 och ta bort kommentaren på rad 7.
-# 2. Skriv 'python InlAug2025.py' i terminalen
-# 3. Välj ett alternativ från startmenyn.
-    # s: Spela skattjakten
-    # t: Visa topplistan enligt csv-filen på rad 5
-    # d: Visa diagrammet på statistiken enligt csv-filen på rad 5
-    # q: Avsluta spelet
-
-# Skriv din kod här:
-
-## Del 1
-
+# Lägg till dina importerade bibliotek och moduler här:
 ############ IMPORTS ############
 import random
 import csv
@@ -41,14 +21,28 @@ options = {
     "4":"Avsluta spelet"
 }
 
+filnamn = 'skattresultat.csv'
+# filnamn = 'exempelCSV.csv'
+
 min_doors = 1
 max_doors = 10
 ######### SLUT PÅ GLOBALA VARIABLER #########
 
+# Hur du kör koden:
+# 1. Om du vill köra koden med din fil 'skattresultat.csv' kan du gå vidare till
+# steg 2, men om du vill köra med 'exempelCSV.csv' filen bör du kommentera 
+# rad 24 och ta bort kommentaren på rad 25.
+# 2. Skriv 'python InlAug2025.py' i terminalen
+# 3. Välj ett alternativ från startmenyn.
+    # 1: Spela skattjakten
+    # 2: Visa topplistan enligt csv-filen på rad 5
+    # 3: Visa diagrammet på statistiken enligt csv-filen på rad 5
+    # 4: Avsluta spelet
 
+# Skriv din kod här:
+## Del 1
 # En funktion som används för att starta upp startmenyn 
 # och printar alternativen.
-# options: ett bibliotek för alla olika spelalternativ
 def start_menu(options):
     print("\n***STARTMENY***\n")
     for key in options:                                                         # Itererar genom options biblioteket och printar alla olika spelalternativ
@@ -56,9 +50,8 @@ def start_menu(options):
         print()
 
 
+## Del 2
 # En hjälpfunktion som används för att rita upp alla dörrar som används i spelet.
-# max_doors: max antal dörrar som använda i spelet
-# used_doors: dörrarna som användaren tidigare har öppnat under spelet
 def draw_doors(max_doors, used_doors):
     # Dessa strängar bygger upp den visuella bilden av varje dörr i spelet.
     top = ""
@@ -88,23 +81,22 @@ def draw_doors(max_doors, used_doors):
 # En funktion som kollar ifall att dörren som användaren vill öppna är en
 # dörr som redan är öppen, en dörr där skatten ligger bakom, eller en dörr 
 # där ingen skatt ligger bakom. Menyval 1
-# treasure_door: dörren som slumpmässigt valdes, där skatten ligger bakom
-# used_doors: en array av dörrar som användaren tidigare har valt
-# user_input: användarens input, vilken dörr användaren har valt att öppna
 def treasure_hunt(treasure_door, used_doors, user_input):
     if user_input in used_doors:
         print("Du kan inte välja en dörr som du redan har öppnat! Välj en annan dörr!")
+        return False
+    
+    if user_input < min_doors or user_input > max_doors:
+        print("Välj ett heltal mellan 1 och 10.\n")
         return False
     
     used_doors.append(user_input)                                               # Lägger till senast valda dörr i en array av använda dörrar
     
     if user_input == treasure_door:
         score = len(used_doors)
-        # treasure_final = treasure_value(treasure, score)
         print("****************************************************************************************************\n")
         print(f"          Grattis! Du har hittat skatten bakom dörr {treasure_door}, efter {score} försök!")
         print("\n****************************************************************************************************")
-        # print(f"Din slutgiltiga skatt efter {score} försök: {treasure_final}")
         return True
     else:
         print(f"*****Hoppsan! Ingen skatt hittades bakom dörr {user_input}. Skatten har nu halverats!*****")
@@ -112,22 +104,16 @@ def treasure_hunt(treasure_door, used_doors, user_input):
 
 
 # En funktion som används för att spara användarens uppgifter i csv-filen.
-# name: namnet på användaren som angetts i början av spelet
-# score: antal försök användaren hade innan de hittade skatten
-# file_name: namnet på csv-filen vi kommer skriva till
 def save_result(name, score, file_name):
     # Öppnar filen med avseende på att kunna appenda och spara data till filen.
-    with open(file_name, 'a') as file:
+    with open(file_name, 'a', newline='') as file:                              # newline='' undviker onödiga tomma rader efter varje rad i csv-filen
         writer = csv.writer(file)                                               # Skapar en writer filobjekt som används för att skriva till filen
         writer.writerow([name, score])                                          # Skriver en rad till csv-filen med både namnet och antal försök
 
 
-# En funktion som används för att printa ut topplistan enligt csv-filen.
-# Menyval 2
-# file_name: namnet på csv-filen vi kommer läsa data ifrån
+## Del 3
+# En funktion som används för att printa ut topplistan enligt csv-filen. Menyval 2
 def show_leaderboard(file_name):
-    # En tom lista som är gjord för att innehålla användarna i csv-filen
-    # och deras poäng.
     user_list = []
 
     # Öppnar upp csv-filen med avseende på att läsa från filen och skapar en reader 
@@ -152,21 +138,18 @@ def show_leaderboard(file_name):
         print(f"{row[0]:<10} |  {row[1]:>5}")
 
 
+## Del 4
 # En hjälpfunktion som räknar frekvensen av ett visst antal försök (n) 
 # förekommer i listan.
-# list: listan med varje försök från alla spelare från topplistan
-# n: nuvarande antal försök vi vill räkna frekvensen av
 def counter(list, n):
-    count = 0                                                                   # En tom counter
+    count = 0
     for try_value in list:                                                      # Try_value är nuvarande antal på försöket vi vill räkna frekvensen av
         if try_value == n:
             count = count + 1                                                   # Ökar countern med 1 varje gång try_value matchar n
     return count
 
 
-# En funktion som används för att rita upp ett diagram på statistiken av antal
-# försök det krävdes för alla spelare som finns i csv-filen.
-# file_name: namnet på csv-filen där vi kommer läsa data ifrån
+# En funktion som används för att rita upp ett diagram på statistiken av antal. Menyval 3
 def show_diagram(file_name):
     try_list = []                                                               # En tom lista med antal försök från varje spelare enligt .csv-filen
 
@@ -190,6 +173,7 @@ def show_diagram(file_name):
     plt.ylabel('Antal spelare')                                                 # Y-axeln i stapeldiagrammet
     plt.title('Statistik: Hur många försök har spelarna behövt')                # Titel på stapeldiagrammet
     plt.xticks(range(1, 11))                                                    # Visar att x-axeln kommer bestå av värdena 1-10
+    print("***Stäng ned diagrammet för att komma tillbaka till Startmenyn!***")
     plt.show()                                                                  # Öppnar upp diagrammet
 
 
@@ -205,32 +189,32 @@ def quit_game():
 # vad användaren vill göra i spelet.
 def main():
     print(f"\n*****Välkommen till Templets Tio Dörrar! Skatten finns bakom en av dörrarna!*****\n")
-    while True:                                                                 # En while-loop för att användaren ska kunna fortsätta spelet tills den vill avsluta spelet
+    while True:
         start_menu(options)
         user_input = input("Välj ett alternativ: ").lower()                     # .lower() tillåter både stora och små bokstäver att användas
 
         if user_input == "1":
             treasure_door = random.randint(1, 10)                               # Väljer en slumpmässig dörr mellan 1 och 10, där skatten befinner sig bakom
-            used_doors = []                                                     # En lista där alla valda dörrar kommer appendas till, för felhantering
+            used_doors = []
             
             while True:
-                draw_doors(max_doors, used_doors)                               # Ritar upp dörrarna som användaren kan välja att öppna. 
+                draw_doors(max_doors, used_doors)
                 print()
                 
-                try:
-                    user_input = int(input("Vilken dörr vill du öppna? "))      # Konverterar strängen som är användarens input till en int för att välja en dörr
-                    print()
-                except:                                                         # Felhantering om användaren inte väljer en giltig dörr
-                    print("Välj ett heltal mellan 1 och 10.\n")
-                    break
+                user_input = input("Vilken dörr vill du öppna? ")               # Konverterar strängen som är användarens input till en int för att välja en dörr
+                print()
+                
+                if user_input.isdigit():
+                    found = treasure_hunt(treasure_door, used_doors, int(user_input))    # Kollar om användaren har hittat rätt dörr
+                else:
+                    print("Skriv ett heltal mellan 1 och 10!")
+                    continue
 
-                found = treasure_hunt(treasure_door, used_doors, user_input)    # Kollar om användaren har hittat rätt dörr
-
-                if found:                                                       # If-satsen körs om användaren har hittat rätt dörr, annars fortsätter while-loopen
+                if found:
                     score = len(used_doors)                                     # Antal försök innan användaren hittade rätt dörr
                     name = input("Vad heter du? ")
                     save_result(name, score, filnamn)
-                    break                                                       # Avslutar denna while-loop för att användaren kan komma tillbaka till startmenyn
+                    break
         elif user_input == "2":
             show_leaderboard(filnamn)                                           # Anropar och kör topplista-funktionen
         elif user_input == "3":
